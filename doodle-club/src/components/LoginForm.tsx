@@ -1,6 +1,6 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
-import { User } from '../types/UserType';
+import { UserType } from '../types/UserType';
 
 export function LoginForm() {
     const { user, setUser } = useContext(UserContext);
@@ -8,10 +8,11 @@ export function LoginForm() {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const user: User = {
+        const user: UserType = {
             _id: name,
             name: name
         }
+        
         setUser && setUser(user);
     }
 

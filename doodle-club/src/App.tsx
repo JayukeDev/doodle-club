@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { LoginForm } from './components/LoginForm';
-import { User } from './types/UserType'
+import { UserType } from './types/UserType'
 import { UserContextType } from './types/UserContextType';
 import { Login } from './pages/Login';
 import { Lobby } from './pages/Lobby';
@@ -10,7 +10,7 @@ import { Lobby } from './pages/Lobby';
 export const UserContext = React.createContext<UserContextType>({});
 
 const App = () => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UserType>();
 
 
   return (

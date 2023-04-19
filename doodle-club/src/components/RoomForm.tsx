@@ -1,10 +1,11 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
-import { User } from '../types/UserType';
+import { RoomType } from '../types/RoomType';
+import { UserType } from '../types/UserType';
 
-export function LobbyForm() {
+export function RoomForm() {
     const { user, setUser } = useContext(UserContext);
-    const [lobbyForm, setLobbyForm] = useState<LobbyFormDefinition>();
+    const [roomForm, setRoomForm] = useState<RoomType>();
 
     const [name, setName] = useState<string>();
     const [isPrivate, setIsPrivate] = useState<boolean>(false);
@@ -25,7 +26,7 @@ export function LobbyForm() {
         
         // TODO: Validation
 
-        const lobby: LobbyFormDefinition = {
+        const lobby: RoomType = {
             _id: name!,
             adminId: user?._id!,
             name: name!,
@@ -38,11 +39,11 @@ export function LobbyForm() {
             teamAutoBalance: isTeamAutoBalance
         }
 
-        setLobbyForm(lobby);
+        setRoomForm(lobby);
     }
 
     return (
-    <div className="LoginForm">
+    <div className="RoomForm">
         <form onSubmit={handleSubmit}>
             <label htmlFor="name">Room Name</label>
             <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={16} />
@@ -77,22 +78,4 @@ export function LobbyForm() {
         </form>
     </div>
     );
-}
-
-interface LobbyFormDefinition {
-    _id: string;
-    name: string;
-    passCode: string;
-
-    adminId: string;
-
-    occupancyMax: number;
-    
-    teamMin: number;
-    teamMax: number;
-
-    teamMemberMin: number;
-    teamMemberMax: number;
-
-    teamAutoBalance: boolean;
 }

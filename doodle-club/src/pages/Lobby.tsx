@@ -1,22 +1,25 @@
 import { useState } from "react"
-import { LobbyForm } from "../components/LobbyForm";
+import { RoomBrowser } from "../components/RoomBrowser";
+import { RoomForm } from "../components/RoomForm";
 
 export function Lobby() {
-    const [creatingLobby, setCreatingLobby] = useState(false);
+    const [creatingRoom, setCreatingRoom] = useState(false);
+    const [rooms, setRooms] = useState([]);
 
     const createForm = (event: any) => {
         event.preventDefault();
-        setCreatingLobby(true);
-        console.log(creatingLobby);
+        setCreatingRoom(true);
+        console.log(creatingRoom);
     }
 
     // TODO: Hook to save form ~ somewhere ~
 
     return (
         <div className="Lobby">
-            <button name="Create Lobby" onClick={createForm}>Create New Lobby</button>
+            <button name="Create Room" onClick={createForm}>Create New Room</button>
             <hr />
-            { creatingLobby && <LobbyForm /> }
+            { creatingRoom && <RoomForm /> }
+            <RoomBrowser />
         </div>
     );
 }
