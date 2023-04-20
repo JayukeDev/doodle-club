@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useContext, useState } from 'react';
+import { FC, FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
 import { UserType } from '../types/UserType';
 
@@ -13,25 +13,25 @@ export const LoginForm: FC = () => {
             _id: name,
             name: name
         }
-        
+
         setUser && setUser(user);
     }
 
     return (
-    <div className="LoginForm">
-        <form onSubmit={handleSubmit}>
-            <h2>Name</h2>
-            <p>Please enter a name to continue.</p>
-            <input 
-                type="text" 
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                maxLength={16} 
-            />
-        
-            <hr />
-            <input type="submit" />
-        </form>
-    </div>
+        <div className="LoginForm">
+            <form onSubmit={handleSubmit}>
+                <h2>Name</h2>
+                <p>Please enter a name to continue.</p>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    maxLength={16}
+                />
+
+                <hr />
+                <input type="submit" />
+            </form>
+        </div>
     );
 }

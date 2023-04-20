@@ -6,7 +6,7 @@ export interface RoomType {
     adminId: string;
 
     occupancyMax: number;
-    
+
     teamMin: number;
     teamMax: number;
 

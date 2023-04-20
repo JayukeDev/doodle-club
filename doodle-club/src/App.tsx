@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { LoginForm } from './components/LoginForm';
-import { UserType } from './types/UserType'
-import { UserContextType } from './types/UserContextType';
-import { Login } from './pages/Login';
 import { Lobby } from './pages/Lobby';
+import { Login } from './pages/Login';
+import { UserContextType } from './types/UserContextType';
+import { UserType } from './types/UserType';
 
 import "./pages/styles.css";
 

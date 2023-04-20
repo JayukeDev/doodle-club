@@ -7,47 +7,47 @@ export const Modal: FC<{ config: ModalConfig }> = ({ config }) => {
     const modalBase = () => (
         <div className="ModalBase">
             <button id="Cancel" onClick={() => handleCancel(false)}>X</button>
-            <h1>{ config.header }</h1>
-            <p>{ config.message }</p>
+            <h1>{config.header}</h1>
+            <p>{config.message}</p>
 
-            { config.form && config.formDefinition }
+            {config.form && config.formDefinition}
 
-            <button id="Accept" onClick={() => handleAccept(false)}>{ config.acceptLabel }</button>
-            <button id="Deny" onClick={() => handleCancel(false)}>{ config.denyLabel }</button>
+            <button id="Accept" onClick={() => handleAccept(false)}>{config.acceptLabel}</button>
+            <button id="Deny" onClick={() => handleCancel(false)}>{config.denyLabel}</button>
         </div>
     );
 
     const modalConfirmCancel = () => (
-            <div className="ModalCancel">
+        <div className="ModalCancel">
 
-            <h1>{ config.cancelConfirmationHeader }</h1>
-            <p>{ config.cancelConfirmationMessage }</p>
+            <h1>{config.cancelConfirmationHeader}</h1>
+            <p>{config.cancelConfirmationMessage}</p>
 
-            <button id="CancelAccept" onClick={() => handleCancel(true)}>{ config.cancelConfirmationAcceptLabel }</button>
-            <button id="CancelDeny" onClick={() => handleCancel(true)}>{ config.cancelConfirmationDenyLabel }</button>
+            <button id="CancelAccept" onClick={() => handleCancel(true)}>{config.cancelConfirmationAcceptLabel}</button>
+            <button id="CancelDeny" onClick={() => handleCancel(true)}>{config.cancelConfirmationDenyLabel}</button>
         </div>
     );
 
     const modalConfirm = () => (
         <div className="ModalConfirm">
 
-        <h1>{ config.confirmationHeader }</h1>
-        <p>{ config.confirmationMessage }</p>
+            <h1>{config.confirmationHeader}</h1>
+            <p>{config.confirmationMessage}</p>
 
-        <button id="ConfirmAccept" onClick={() => handleAccept(true)}>{ config.confirmationAcceptLabel }</button>
-        <button id="ConfirmDeny" onClick={() => handleAccept(true)}>{ config.confirmationDenyLabel }</button>
-    </div>
+            <button id="ConfirmAccept" onClick={() => handleAccept(true)}>{config.confirmationAcceptLabel}</button>
+            <button id="ConfirmDeny" onClick={() => handleAccept(true)}>{config.confirmationDenyLabel}</button>
+        </div>
     );
 
     const handleAccept = (confirming: boolean) => {
-        if(config.confirmation && !confirming)
+        if (config.confirmation && !confirming)
             setConfirmActive(true);
         else
             config.confirmFunction();
     }
 
     const handleCancel = (canceling: boolean) => {
-        if(config.cancelConfirmation && !canceling)
+        if (config.cancelConfirmation && !canceling)
             setCancelActive(true);
         else
             config.cancelFunction();
@@ -55,9 +55,9 @@ export const Modal: FC<{ config: ModalConfig }> = ({ config }) => {
 
     return (
         <div className="Modal">
-            { !cancelActive && !confirmActive && modalBase() }
-            { cancelActive && modalConfirmCancel() }
-            { confirmActive && modalConfirm() }
+            {!cancelActive && !confirmActive && modalBase()}
+            {cancelActive && modalConfirmCancel()}
+            {confirmActive && modalConfirm()}
         </div>
     );
 }
@@ -88,7 +88,7 @@ export interface ModalConfig {
     cancelFunction(data?: any): Result; // required; parent must handle cancel action
 }
 
-export interface  Result {
+export interface Result {
     success: boolean;
     successMessages?: string[];
     errorMessages?: string[];

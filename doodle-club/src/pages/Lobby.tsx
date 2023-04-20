@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 import { Modal, ModalConfig, ModalSize, Result } from "../components/Modal";
 import { RoomBrowser } from "../components/RoomBrowser";
 import { RoomSettings } from "../components/RoomSettings";
@@ -67,7 +67,7 @@ export const Lobby: FC = () => {
         <div className="Lobby">
             <button name="Create Room" onClick={createForm}>Create New Room</button>
             <hr />
-            { creatingRoom && <Modal config={roomFormConfig}/> }
+            {creatingRoom && <Modal config={roomFormConfig} />}
             <RoomBrowser rooms={rooms} />
         </div>
     );
