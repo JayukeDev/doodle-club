@@ -7,6 +7,8 @@ import { UserContextType } from './types/UserContextType';
 import { Login } from './pages/Login';
 import { Lobby } from './pages/Lobby';
 
+import "./pages/styles.css";
+
 export const UserContext = React.createContext<UserContextType>({});
 
 const App = () => {

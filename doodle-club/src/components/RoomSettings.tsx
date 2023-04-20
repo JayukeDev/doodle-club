@@ -1,15 +1,16 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FC, FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
 import { RoomType } from '../types/RoomType';
 import { UserType } from '../types/UserType';
+import { Result } from './Modal';
 
-export function RoomForm() {
+export const RoomSettings: FC<{ createRoom(room: RoomType): void }> = ({ createRoom }) => {
     const { user, setUser } = useContext(UserContext);
-    const [roomForm, setRoomForm] = useState<RoomType>();
+    const [roomSettings, setRoomSettings] = useState<RoomType>();
 
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>("");
     const [isPrivate, setIsPrivate] = useState<boolean>(false);
-    const [passCode, setPassCode] = useState<string>();
+    const [passCode, setPassCode] = useState<string>("");
 
     const [teamMin, setTeamMin] = useState<number>(0);
     const [teamMax, setTeamMax] = useState<number>(0);
@@ -26,7 +27,7 @@ export function RoomForm() {
         
         // TODO: Validation
 
-        const lobby: RoomType = {
+        const room: RoomType = {
             _id: name!,
             adminId: user?._id!,
             name: name!,
@@ -38,12 +39,12 @@ export function RoomForm() {
             teamMemberMax: teamMemberMax,
             teamAutoBalance: isTeamAutoBalance
         }
-
-        setRoomForm(lobby);
+        console.log(event);
+        createRoom(room);
     }
 
     return (
-    <div className="RoomForm">
+    <div className="RoomSettings">
         <form onSubmit={handleSubmit}>
             <label htmlFor="name">Room Name</label>
             <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={16} />

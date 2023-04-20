@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { LoginForm } from "../components/LoginForm";
 
-export function Login() {
+export const Login: FC = () => {
     return (
         <div className="Login">
             <LoginForm />

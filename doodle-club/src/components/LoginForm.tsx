@@ -1,8 +1,9 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FC, FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
 import { UserType } from '../types/UserType';
 
-export function LoginForm() {
+
+export const LoginForm: FC = () => {
     const { user, setUser } = useContext(UserContext);
     const [name, setName] = useState("");
 
