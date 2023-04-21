@@ -1,12 +1,17 @@
 import { FC, useState } from "react";
+import { Success } from "../App";
 import { Modal, ModalConfig, ModalSize, Result } from "../components/Modal";
 import { RoomBrowser } from "../components/RoomBrowser";
 import { RoomSettings } from "../components/RoomSettings";
 import { RoomType } from "../types/RoomType";
 
+import "./Lobby.css";
+import { Room } from "./Room";
+
 export const Lobby: FC = () => {
     const [creatingRoom, setCreatingRoom] = useState(false);
     const [rooms, setRooms] = useState(mockRooms);
+    const [selectedRoom, setSelectedRoom] = useState<RoomType>();
 
     const createForm = (event: any) => {
         event.preventDefault();
@@ -25,20 +30,17 @@ export const Lobby: FC = () => {
 
         setCreatingRoom(false);
 
-        const result: Result = {
-            success: true
-        }
-
-        return result;
+        return Success;
     }
 
     const createRoomCancel = (): Result => {
         setCreatingRoom(false);
-        const result: Result = {
-            success: true
-        }
+        return Success;
+    }
 
-        return result;
+    const handleRoomSelect = (room: RoomType): Result => {
+        setSelectedRoom(room);
+        return Success;
     }
 
     const roomFormConfig: ModalConfig = {
@@ -62,13 +64,23 @@ export const Lobby: FC = () => {
         confirmFunction: createRoom,
         cancelFunction: createRoomCancel
     }
+    
+    const renderLobby = () => {
+        if (selectedRoom){
+            return <Room settings={selectedRoom} />
+        }
 
-    return (
-        <div className="Lobby">
+        return <div className="LobbyDefault">
             <button name="Create Room" onClick={createForm}>Create New Room</button>
             <hr />
             {creatingRoom && <Modal config={roomFormConfig} />}
-            <RoomBrowser rooms={rooms} />
+            <RoomBrowser rooms={rooms} roomSelect={handleRoomSelect} />
+        </div>;
+    }
+
+    return (
+        <div className="Lobby">
+            {renderLobby()}
         </div>
     );
 }

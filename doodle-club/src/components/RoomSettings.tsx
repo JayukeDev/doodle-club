@@ -38,7 +38,7 @@ export const RoomSettings: FC<{ createRoom(room: RoomType): void }> = ({ createR
         }
         console.log(event);
         createRoom(room);
-    }
+    };
 
     return (
         <div className="RoomSettings">

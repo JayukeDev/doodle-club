@@ -12,7 +12,7 @@ export const Modal: FC<{ config: ModalConfig }> = ({ config }) => {
 
             {config.form && config.formDefinition}
 
-            <button id="Accept" onClick={() => handleAccept(false)}>{config.acceptLabel}</button>
+            {!config.form && <button id="Accept" onClick={() => handleAccept(false)}>{config.acceptLabel}</button>}
             <button id="Deny" onClick={() => handleCancel(false)}>{config.denyLabel}</button>
         </div>
     );
@@ -44,14 +44,14 @@ export const Modal: FC<{ config: ModalConfig }> = ({ config }) => {
             setConfirmActive(true);
         else
             config.confirmFunction();
-    }
+    };
 
     const handleCancel = (canceling: boolean) => {
         if (config.cancelConfirmation && !canceling)
             setCancelActive(true);
         else
             config.cancelFunction();
-    }
+    };
 
     return (
         <div className="Modal">

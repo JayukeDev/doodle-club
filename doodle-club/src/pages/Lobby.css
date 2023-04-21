@@ -1,0 +1,17 @@
+.RoomListItem {
+    background-color: rgb(231, 182, 182);
+}
+
+.RoomListItem :hover {
+    background-color: rgb(160, 124, 124);
+}
+
+.Lobby {
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.LobbyDefault {
+    width: 60%;
+    margin: 15% auto;
+}

@@ -15,7 +15,7 @@ export const LoginForm: FC = () => {
         }
 
         setUser && setUser(user);
-    }
+    };
 
     return (
         <div className="LoginForm">
