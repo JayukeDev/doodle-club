@@ -1,3 +1,5 @@
+import { Colors, Elevation } from '@blueprintjs/core';
+import { Button, Card, Checkbox, Divider, FormGroup, InputGroup, NumericInput } from '@blueprintjs/core/lib/esm/components';
 import { FC, FormEvent, useContext, useState } from 'react';
 import { UserContext } from '../App';
 import { RoomType } from '../types/RoomType';
@@ -19,8 +21,7 @@ export const RoomSettings: FC<{ createRoom(room: RoomType): void }> = ({ createR
 
     const [isTeamAutoBalance, setIsTeamAutoBalance] = useState<boolean>(false);
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleSubmit = () => {
 
         // TODO: Validation
 
@@ -36,12 +37,54 @@ export const RoomSettings: FC<{ createRoom(room: RoomType): void }> = ({ createR
             teamMemberMax: teamMemberMax,
             teamAutoBalance: isTeamAutoBalance
         }
-        console.log(event);
         createRoom(room);
     };
 
+    const cardStyle = {
+        color: Colors.LIGHT_GRAY3,
+        background: Colors.DARK_GRAY5
+    }
+
     return (
-        <div className="RoomSettings">
+        <Card className="RoomSettings" elevation={Elevation.ONE} style={cardStyle} >
+            <FormGroup className="RoomSettingsFormGroup">
+                <label className="label" htmlFor="name" value-attr="Room Name">
+                <InputGroup  type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={16} />
+                </label>
+                <label className="label" htmlFor="isPrivate" value-attr="Private Room">
+                <Checkbox type="checkbox" name="isPrivate" onChange={() => setIsPrivate(!isPrivate)} />
+                </label>
+                {isPrivate &&
+                    <label className="label" htmlFor="passCode" value-attr="Pass Code">
+                    <InputGroup type="text" name="passCode" value={passCode} onChange={(e) => setPassCode(e.target.value)} maxLength={10} />
+                    </label>
+                }
+
+                <label className="label" htmlFor="occupancyMax" value-attr="Max Number of Participants">
+                <NumericInput  type="number" name="occupancyMax" value={occupancyMax} max={16} min={2} onValueChange={setOccupancyMax} />
+                </label>
+                <label className="label" htmlFor="teamMin" value-attr="Min Number of Teams">
+                <NumericInput  type="number" name="teamMin" value={teamMin} max={16} min={2} onValueChange={setTeamMin} />
+                </label>
+                <label className="label" htmlFor="teamMax" value-attr="Max Number of Teams">
+                <NumericInput  type="number" name="teamMax" value={teamMax} max={16} min={2} onValueChange={setTeamMax} />
+                </label>
+                <label className="label" htmlFor="teamMemberMin" value-attr="Min Members per Team">
+                <NumericInput  type="number" name="teamMemberMin" value={teamMemberMin} max={16} min={2} onValueChange={setTeamMemberMin} />
+                </label>
+                <label className="label" htmlFor="teamMemberMax" value-attr="Max Members per Team">
+                <NumericInput  type="number" name="teamMemberMax" value={teamMemberMax} max={16} min={2} onValueChange={setTeamMemberMax} />
+                </label>
+                <label className="label" htmlFor="autoTeamBalance" value-attr="Auto Team Balance">
+                <Checkbox type="checkbox" name="autoTeamBalance" onChange={() => setIsTeamAutoBalance(!isTeamAutoBalance)} />
+                </label>
+                <Button type="submit" intent="success" onClick={handleSubmit}>Create Room</Button>
+            </FormGroup>
+        </Card>
+    );
+}
+
+/*
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Room Name</label>
                 <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={16} />
@@ -72,8 +115,6 @@ export const RoomSettings: FC<{ createRoom(room: RoomType): void }> = ({ createR
                 <label htmlFor="autoTeamBalance">Auto Team Balance</label>
                 <input type="checkbox" name="autoTeamBalance" onChange={() => setIsTeamAutoBalance(!isTeamAutoBalance)} />
                 <br />
-                <input type="submit" />
+                <Button type="submit" intent="success">Create Room</Button>
             </form>
-        </div>
-    );
-}
+            */

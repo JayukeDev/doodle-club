@@ -20,9 +20,8 @@
 
 /* Modal Content/Box */
 .ModalConfirm {
-    justify-content: space-evenly;
     gap: 20px;
-    background-color: red;
+    background-color: rgb(105, 105, 105);
     margin: 15% auto;
     /* 15% from the top and centered */
     padding: 20px;
@@ -32,7 +31,19 @@
 }
 
 .ModalBase {
-    background-color: red;
+    background-color:  #282c34;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+
+    border-radius: 25px;
+}
+
+.ModalCancel {
+    background-color:  rgb(82, 115, 61);
     margin: 15% auto;
     /* 15% from the top and centered */
     padding: 20px;
@@ -41,12 +52,73 @@
     /* Could be more or less, depending on screen size */
 }
 
-.ModalCancel {
-    background-color: red;
-    margin: 15% auto;
-    /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
+.LoginCard {
+    width: 20%;
+    margin-top:10%;
+    margin-left: 40%;
+}
+
+.RoomBrowser {
+    width: 33%;
+    margin-left: 32%;
+}
+
+.RoomCapacity {
+    display: inline-block;
+    font-size: 1.2em;
+    padding: 0 0.2em;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 10px;
+
+    background-color: attr(capacity-color-attr);
+  }
+
+  .RoomCapacity::before {
+    padding: 5px;
+    content: attr(top-attr);
+    display: inline-block;
+  }
+
+  .RoomCapacity::after {
+    padding: 5px;
+    content: attr(bottom-attr);
+    display: inline-block;
+  }
+
+.Lobby {
+    margin: 2%;
+}
+
+.RoomSettings {
+    margin-left: 25%;
+    margin-bottom: 2%;
+    width: 50%;
+}
+
+.RoomSettingsFormGroup {
+    width: 100%;
+    align-content: left;
+}
+
+.label {
+    width:100%;
+    display: inline-flex;
+    padding: 10px;
+}
+
+.label::before {
+    width:40%;
+    content: attr(value-attr);
+}
+
+.JoinTeamForm {
+    text-align: center;
+    padding: 10px;
+}
+
+.Center {
+    margin: 10px;
+    display: inline-block;
+    width: 20%;
 }

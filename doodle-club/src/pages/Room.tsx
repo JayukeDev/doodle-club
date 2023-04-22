@@ -7,9 +7,7 @@ import { RoomType } from "../types/RoomType";
 import { RoomUserContextType } from "../types/RoomUserContextType";
 import { Team } from "../types/TeamType";
 
-import "./Room.css";
-
-export const Room: FC<{ settings: RoomType }> = ({ settings }) => {
+export const Room: FC<{ settings?: RoomType }> = ({ settings }) => {
     const { user } = useContext(UserContext);
     const [userRoomContext, setUserRoomContext] = useState(user as RoomUserContextType);
     const [gameSettings, setGameSettings] = useState(mockGameSettings);

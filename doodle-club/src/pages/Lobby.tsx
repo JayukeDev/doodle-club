@@ -1,17 +1,19 @@
+import { Button } from "@blueprintjs/core";
 import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Success } from "../App";
 import { Modal, ModalConfig, ModalSize, Result } from "../components/Modal";
 import { RoomBrowser } from "../components/RoomBrowser";
 import { RoomSettings } from "../components/RoomSettings";
 import { RoomType } from "../types/RoomType";
-
-import "./Lobby.css";
 import { Room } from "./Room";
 
 export const Lobby: FC = () => {
     const [creatingRoom, setCreatingRoom] = useState(false);
     const [rooms, setRooms] = useState(mockRooms);
     const [selectedRoom, setSelectedRoom] = useState<RoomType>();
+
+    const navigate = useNavigate();
 
     const createForm = (event: any) => {
         event.preventDefault();
@@ -47,7 +49,7 @@ export const Lobby: FC = () => {
         size: ModalSize.MEDIUM,
         form: true,
         formDefinition: <RoomSettings createRoom={createRoom} />,
-        header: "Create New Room",
+        header: "Room Configuration",
         acceptLabel: "Create",
         denyLabel: "Cancel",
 
@@ -64,15 +66,14 @@ export const Lobby: FC = () => {
         confirmFunction: createRoom,
         cancelFunction: createRoomCancel
     }
-    
+
     const renderLobby = () => {
-        if (selectedRoom){
+        if (selectedRoom) {
             return <Room settings={selectedRoom} />
         }
 
         return <div className="LobbyDefault">
-            <button name="Create Room" onClick={createForm}>Create New Room</button>
-            <hr />
+            <Button className="CreateRoom" intent="warning" onClick={createForm}>Create New Room</Button>
             {creatingRoom && <Modal config={roomFormConfig} />}
             <RoomBrowser rooms={rooms} roomSelect={handleRoomSelect} />
         </div>;
