@@ -1,6 +1,5 @@
 import { Button } from "@blueprintjs/core";
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Success } from "../App";
 import { Modal, ModalConfig, ModalSize, Result } from "../components/Modal";
 import { RoomBrowser } from "../components/RoomBrowser";
@@ -12,8 +11,6 @@ export const Lobby: FC = () => {
     const [creatingRoom, setCreatingRoom] = useState(false);
     const [rooms, setRooms] = useState(mockRooms);
     const [selectedRoom, setSelectedRoom] = useState<RoomType>();
-
-    const navigate = useNavigate();
 
     const createForm = (event: any) => {
         event.preventDefault();

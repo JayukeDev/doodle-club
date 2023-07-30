@@ -11,10 +11,8 @@ import "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "../node_modules/normalize.css/normalize.css";
 import "./pages/styles.css";
 
-import { Colors } from '@blueprintjs/core/lib/esm/common';
 import { Main } from './components/Main';
 import { Result } from './components/Modal';
-import { NotFound } from './pages/NotFound';
 
 export const UserContext = React.createContext<UserContextType>({});
 export const Success: Result = { success: true };
