@@ -1,7 +1,10 @@
 import { Button, Card, Elevation, FormGroup, InputGroup } from '@blueprintjs/core';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { CSSProperties, useState } from 'react';
+import { LocalColors } from '../constants/LocalColors';
 
 export default function Home() {
+  const router = useRouter();
   const [user, setUser] = useState({ name: "", code: "" });
   const [form, setForm] = useState({ name: "", code: "" });
   const existingRooms = ["1234", "abcd"];
@@ -16,25 +19,42 @@ export default function Home() {
       return alert(`No room with code ${form.code} found.`);
 
     setUser(form);
+    router.push(`/rooms/${form.code}`)
+  }
+
+  const LoginCardStyle: CSSProperties = {
+    backgroundColor: LocalColors.Green,
+    width: '50%',
+    padding: '10%',
+    margin: 'auto',
+    marginTop: '100px',
+    textAlign: 'center'
   }
 
   return (
-    <Card elevation={Elevation.TWO}>
-      <form onSubmit={handleSubmit}>
-        <h1>Test</h1>
+    <Card elevation={Elevation.TWO} style={LoginCardStyle}>
+      <h1>Your mom</h1>
+      <form onSubmit={handleSubmit} style={{  margin: 'auto' }}>
         <FormGroup
           label="Name"
           labelFor="name-input"
-          helperText="Enter a name. This will be displayed to all players."
         />
-        <InputGroup type="text" id="name-input" value={form.name} onValueChange={(value) => setForm({ ...form, name: value })} />
+        <InputGroup
+          type="text"
+          id="name-input"
+          value={form.name}
+          onValueChange={(value) => setForm({ ...form, name: value })} />
 
         <FormGroup
           label="Code"
           labelFor="code-input"
-          helperText="Enter a room code, or leave empty to join a rnadom room."
         />
-        <InputGroup type="text" id="code-input" value={form.code} onValueChange={(value) => setForm({ ...form, code: value })} />
+        <InputGroup
+          type="text"
+          id="code-input"
+          value={form.code}
+          onValueChange={(value) => setForm({ ...form, code: value })} />
+
         <Button text="Play" type='submit' />
       </form>
     </Card>
