@@ -18,6 +18,9 @@ export default function Home() {
     if (form.code && !existingRooms.find(entry => entry === form.code))
       return alert(`No room with code ${form.code} found.`);
 
+    if (!form.code)
+      form.code = "random";
+
     setUser(form);
     router.push(`/rooms/${form.code}`)
   }
