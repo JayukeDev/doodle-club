@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import { CSSProperties } from "react";
 import Chat from "../../components/Chat";
 import Roster from "../../components/Roster";
+import { LocalColors } from "../../constants/LocalColors";
 import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
-import { LocalColors } from "../../constants/LocalColors";
 
 export default function Room() {
     const router = useRouter();
-    let roomCode = router.query.code as string;
+    const roomCode = router.query.code as string;
 
-    const { teams, players } = useFetchRoster();
-    const leftChat = useFetchChat(roomCode, 1);
+    const { players } = useFetchRoster();
+    const leftChat =  useFetchChat(roomCode, 1);
     const rightChat = useFetchChat(roomCode, 2);
     // Canvas
     const canvasStyle: CSSProperties = {
@@ -49,7 +49,7 @@ export default function Room() {
     };
 
     const canvasContainerStyle: CSSProperties = {
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -70,4 +70,4 @@ export default function Room() {
             </Card>
         </>
     );
-};
+}
