@@ -1,6 +1,10 @@
 import { Player } from "../types/Player";
 import { Team } from "../types/Team";
 
+/**
+ * Fetches the Current Team rosters and Players.
+ * @returns team: { displayName, players[] }[], players: { displayName, team, points }[]
+ */
 export const useFetchRoster = () => {
     const mockPlayers: Player[] = [
         { displayName: "Bobby", team: 1, points: 100 },

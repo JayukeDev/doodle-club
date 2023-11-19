@@ -1,59 +1,35 @@
 import { Card } from "@blueprintjs/core";
-import { useRouter } from "next/router";
-import { CSSProperties } from "react";
+import { CSSProperties, useContext, useState } from "react";
 import Chat from "../../components/Chat";
 import Roster from "../../components/Roster";
 import { LocalColors } from "../../constants/LocalColors";
 import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
+import { UserContext } from "../_app";
+import { Player } from "../../types/Player";
 
 export default function Room() {
-    const router = useRouter();
-    const roomCode = router.query.code as string;
+    const { user } = useContext(UserContext);
+    const roomCode = user.code;
 
+    // when the player first joins, we need them to select a team.
+    // And then update the roster.
     const { players } = useFetchRoster();
-    const leftChat =  useFetchChat(roomCode, 1);
+    const leftChat = useFetchChat(roomCode, 1);
     const rightChat = useFetchChat(roomCode, 2);
-    // Canvas
-    const canvasStyle: CSSProperties = {
-        width: '450px',
-        height: '350px',
-        border: '2px solid #000000'
-    };
 
-    const rosterStyle: CSSProperties = {
-        backgroundColor: LocalColors.Green,
-        height: '100%',
-        width: '350px',
-        color: LocalColors.Blue,
-        fontSize: 30,
-        fontFamily: '"Trebuchet MS", sans-serif',
-        fontWeight: 'bold',
-        border: '1px solid',
-    };
+    const [, setPlayer] = useState<Player | undefined>(undefined);
+    const [playerPoints] = useState(0);
+    const [selectedTeam, setSelectedTeam] = useState(0);
 
-    const chatStyle: CSSProperties = {
-        backgroundColor: LocalColors.Orange,
-        height: '100%',
-        width: '220px',
-        border: '1px solid',
-    };
-
-    const roomStyle: CSSProperties = {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '1200px',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '400px'
-    };
-
-    const canvasContainerStyle: CSSProperties = {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '1200px',
+    const selectTeam = (team: number) => {
+        setSelectedTeam(team);
+        setPlayer({
+            displayName: user.name,
+            team: selectedTeam,
+            points: playerPoints
+        });
+        // todo: push to roster
     };
 
     return (
@@ -63,11 +39,62 @@ export default function Room() {
                 <canvas style={canvasStyle}></canvas>
             </Card>
             <Card style={roomStyle}>
-                <Roster players={players.filter(player => player.team === 1)} style={rosterStyle} />
+                <Roster
+                    players={players.filter(player => player.team === 1)}
+                    style={rosterStyle}
+                    team={1}
+                    selectedTeam={selectedTeam}
+                    setSelectedTeam={selectTeam} />
                 <Chat chat={leftChat} style={chatStyle} />
                 <Chat chat={rightChat} style={chatStyle} />
-                <Roster players={players.filter(player => player.team === 2)} style={rosterStyle} />
+                <Roster
+                    players={players.filter(player => player.team === 2)}
+                    style={rosterStyle}
+                    team={2}
+                    selectedTeam={selectedTeam}
+                    setSelectedTeam={selectTeam} />
             </Card>
         </>
     );
 }
+
+const canvasStyle: CSSProperties = {
+    width: '450px',
+    height: '350px',
+    border: '2px solid #000000'
+};
+
+const rosterStyle: CSSProperties = {
+    backgroundColor: LocalColors.Green,
+    height: '100%',
+    width: '350px',
+    color: LocalColors.Blue,
+    fontSize: 30,
+    fontFamily: '"Trebuchet MS", sans-serif',
+    fontWeight: 'bold',
+    border: '1px solid',
+};
+
+const chatStyle: CSSProperties = {
+    backgroundColor: LocalColors.Orange,
+    height: '100%',
+    width: '220px',
+    border: '1px solid',
+};
+
+const roomStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '1200px',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: '400px'
+};
+
+const canvasContainerStyle: CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '1200px',
+};

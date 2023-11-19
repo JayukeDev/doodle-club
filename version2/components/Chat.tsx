@@ -1,9 +1,14 @@
-import { Button, Card, InputGroup } from "@blueprintjs/core"
-import { useCallback, useMemo, useState } from "react";
+import { Button, Card, InputGroup } from "@blueprintjs/core";
+import { CSSProperties, useCallback, useState } from "react";
+import { ChatLine } from "../types/ChatLine";
 
-export default function Chat({ chat, style }) {
+interface ChatProps {
+    chat: ChatLine[],
+    style: CSSProperties
+}
+export default function Chat({ chat, style }: ChatProps) {
     const [chatLine, setChatLine] = useState("");
-    const [chats, setChats] = useState(chat.map(line => <li>{line.message}</li>));
+    const [chats, setChats] = useState(chat.map(line => <li key={Date.now()}>{line.message}</li>));
 
     const postChat = (message: string) => { console.log(message); };
 
@@ -11,17 +16,17 @@ export default function Chat({ chat, style }) {
         event.preventDefault();
 
         postChat(chatLine);
-        setChats([...chats, <li>{chatLine}</li>])
+        setChats([...chats, <li key={Date.now()}>{chatLine}</li>])
         setChatLine("");
     }
 
     useCallback((message: string) => {
-        var objDiv = document.getElementById("chat123");
+        const objDiv = document.getElementById("chat123");
         objDiv.scrollTop = objDiv.scrollHeight;
 
         if(message){
             return [...chats, message];
-        };
+        }
     }, [postChat]);
 
     return (
