@@ -33,7 +33,7 @@ export default function Room() {
     };
 
     return (
-        <>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '100px' }}>
             <Card style={canvasContainerStyle}>
                 <canvas style={canvasStyle}></canvas>
                 <canvas style={canvasStyle}></canvas>
@@ -54,7 +54,7 @@ export default function Room() {
                     selectedTeam={selectedTeam}
                     setSelectedTeam={selectTeam} />
             </Card>
-        </>
+        </div>
     );
 }
 
@@ -69,7 +69,7 @@ const rosterStyle: CSSProperties = {
     height: '100%',
     width: '350px',
     color: LocalColors.Blue,
-    fontSize: 30,
+    fontSize: 20,
     fontFamily: '"Trebuchet MS", sans-serif',
     fontWeight: 'bold',
     border: '1px solid',
@@ -83,18 +83,20 @@ const chatStyle: CSSProperties = {
 };
 
 const roomStyle: CSSProperties = {
+    opacity: '.8',
     display: 'flex',
     flexDirection: 'row',
-    width: '1200px',
+    maxWidth: '1200px',
     alignItems: 'center',
     justifyContent: 'space-between',
     height: '400px'
 };
 
 const canvasContainerStyle: CSSProperties = {
+    opacity: '.9',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '1200px',
+    maxWidth: '1200px',
 };

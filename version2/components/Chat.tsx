@@ -31,13 +31,13 @@ export default function Chat({ chat, style }: ChatProps) {
 
     return (
         <section style={style}>
-            <Card id="chat123" style={{ height: '365px', overflow: 'auto', scrollSnapAlign: 'end' }}>
+            <Card id="chat123" style={{ height: '330px', overflow: 'auto', scrollSnapAlign: 'end' }}>
                 <ul style={{ listStyleType: 'none', overflowAnchor: 'none'}}>
                     {chats}
                     <span style={{ overflowAnchor: 'auto' }} />
                 </ul>
             </Card>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex' }}>
                 <InputGroup
                     style={{ position: 'relative', bottom: 0, width: '100%', border: 'none' }}
                     type="text"
@@ -45,7 +45,7 @@ export default function Chat({ chat, style }: ChatProps) {
                     id="name-input"
                     value={chatLine}
                     onValueChange={(value) => setChatLine(value)} />
-                <Button type='submit'>submit</Button>
+                <Button type='submit' intent='success'>submit</Button>
             </form>
         </section>
     )

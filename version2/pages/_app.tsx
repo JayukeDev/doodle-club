@@ -1,15 +1,17 @@
 import type { AppProps } from 'next/app';
 import { CSSProperties, createContext, useState } from 'react';
+import './app.css';
 
 export const UserContext = createContext({
   user: { name: "", code: "" },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  updateUser: (_name: string, _code: string) => {}
+  updateUser: (_name: string, _code: string) => { }
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState({ name: "", code: "" });
   const backgroundStyle: CSSProperties = {
+    fontFamily: '"Trebuchet MS", sans-serif',
     position: 'absolute',
     top: 0, left: 0,
     width: '100%',
@@ -28,6 +30,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserContext.Provider value={value}>
       <div style={backgroundStyle}>
+        <link href="./app.css" rel="stylesheet" />
         <Component {...pageProps} />
       </div>
     </UserContext.Provider>

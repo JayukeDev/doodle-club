@@ -12,9 +12,14 @@ interface RosterProps {
 export default function Roster({ team, players, style, selectedTeam, setSelectedTeam }: RosterProps) {
     const playerCards = players.map(player => <Card key={player.displayName}>{player.displayName}</Card>);
     return (
-        <CardList style={style}>
-            {playerCards}
-            {!selectedTeam && <Button text="Join Team" onClick={() => setSelectedTeam(team)} />}
-        </CardList>
+        <>
+            <CardList style={style}>
+                {playerCards}
+                {!selectedTeam &&
+                <Button
+                    text="Join Team"
+                    onClick={() => setSelectedTeam(team)} />}
+            </CardList>
+        </>
     );
 }
