@@ -1,8 +1,8 @@
-import express from 'express';
+const express = require('express');
 const app = express();
-import http from 'http';
+const http = require('http');
 const server = http.createServer(app);
-import { Server } from "socket.io";
+const { Server } = require("socket.io");
 const io = new Server(server);
 
 io.on('connection', (socket) => {
@@ -10,6 +10,12 @@ io.on('connection', (socket) => {
 
     socket.on('post chat', (message: string) => {
         console.log('message: ' + message);
+    });
+
+    socket.on('join team', (displayName: string, teamIndex: number, id?: string) => {
+        const player = { id: id ?? "5", displayName, teamIndex };
+        players.push(player);
+        socket.emit('player joined team');
     });
 });
 
@@ -22,14 +28,11 @@ app.get('/teams', (req, res) => {
 });
 
 app.get('/roster', (req, res) => {
-    const roster = players.filter(player => player.teamIndex === req.body.teamIndex);
-    res.status(200).send(roster);
-});
-
-app.post('/join', (req, res) => {
-    const player = { id: "5", displayName: req.body.displayName, teamIndex: req.body.teamIndex };
-    players.push(player);
-    res.status(200).send();
+    const roster = {
+        teams: mockTeams,
+        players: mockPlayers
+    };
+    res.header("Access-Control-Allow-Origin", "*").send(roster);
 });
 
 interface Player {

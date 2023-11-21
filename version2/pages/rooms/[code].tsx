@@ -1,5 +1,5 @@
 import { Card } from "@blueprintjs/core";
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useContext, useMemo, useState } from "react";
 import Chat from "../../components/Chat";
 import Roster from "../../components/Roster";
 import { LocalColors } from "../../constants/LocalColors";
@@ -7,14 +7,29 @@ import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
 import { UserContext } from "../_app";
 import { Player } from "../../types/Player";
+import { io } from "socket.io-client";
 
 export default function Room() {
+    //const socket = io('https://localhost:3005');
+    const [roster, setRoster] = useState({ teams: [], players: [] });
     const { user } = useContext(UserContext);
     const roomCode = user.code;
 
     // when the player first joins, we need them to select a team.
     // And then update the roster.
-    const { players } = useFetchRoster();
+    /*const players = await useMemo(async () => {
+        const roster = await useFetchRoster();
+        console.log(roster);
+        return roster.players;
+    }, []);
+    */
+
+    const fetchPlayers = async () => {
+        const roster = await useFetchRoster();
+        setRoster(roster);
+    };
+
+    fetchPlayers();
     const leftChat = useFetchChat(roomCode, 1);
     const rightChat = useFetchChat(roomCode, 2);
 
@@ -40,7 +55,7 @@ export default function Room() {
             </Card>
             <Card style={roomStyle}>
                 <Roster
-                    players={players.filter(player => player.team === 1)}
+                    players={roster.players.filter(player => player.teamIndex === 1)}
                     style={rosterStyle}
                     team={1}
                     selectedTeam={selectedTeam}
@@ -48,7 +63,7 @@ export default function Room() {
                 <Chat chat={leftChat} style={chatStyle} />
                 <Chat chat={rightChat} style={chatStyle} />
                 <Roster
-                    players={players.filter(player => player.team === 2)}
+                    players={roster.players.filter(player => player.teamIndex === 2)}
                     style={rosterStyle}
                     team={2}
                     selectedTeam={selectedTeam}
