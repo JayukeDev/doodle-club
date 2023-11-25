@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { CSSProperties, createContext, useState } from 'react';
+import { CSSProperties, createContext, useMemo, useState } from 'react';
 import './app.css';
 import { io } from "socket.io-client";
 
@@ -11,6 +11,7 @@ export const UserContext = createContext({
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState({ name: "", code: "" });
+  const [socket, setSocket] = useState({});
   const backgroundStyle: CSSProperties = {
     fontFamily: '"Trebuchet MS", sans-serif',
     position: 'absolute',
@@ -27,7 +28,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     });
   }
 
-  const socket = io('http://localhost:3005');
+  useMemo(() =>{
+    setSocket(io('http://localhost:3005'));
+  }, []);
 
   const value = { user, updateUser };
   return (

@@ -1,4 +1,4 @@
-import { Card } from "@blueprintjs/core";
+import { Card, Dialog, DialogBody } from "@blueprintjs/core";
 import { CSSProperties, useContext, useMemo, useState } from "react";
 import { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
@@ -8,12 +8,14 @@ import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
 import { Player } from "../../types/Player";
 import { UserContext } from "../_app";
+import RoomSettingsForm, { RoomSettings } from "../../components/RoomSettingsForm";
 interface RoomProps {
     socket: Socket
 }
 export default function Room({ socket }: RoomProps) {
     //const socket = io('https://localhost:3005');
     const [roster, setRoster] = useState({ teams: [], players: [] });
+    const [roomSettings, setRoomSettings] = useState<RoomSettings | undefined>();
     const [chat, setChat] = useState([[]]);
     const { user } = useContext(UserContext);
 
@@ -57,6 +59,12 @@ export default function Room({ socket }: RoomProps) {
 
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '100px' }}>
+            <Dialog isOpen={!roomSettings} style={{ width: '1000px' }}>
+                <DialogBody>
+                    <RoomSettingsForm format="full" handleSubmit={settings => setRoomSettings(settings)} />
+                </DialogBody>
+            </Dialog>
+
             <Card style={canvasContainerStyle}>
                 <canvas style={canvasStyle}></canvas>
                 <canvas style={canvasStyle}></canvas>
@@ -68,8 +76,8 @@ export default function Room({ socket }: RoomProps) {
                     team={1}
                     selectedTeam={selectedTeam}
                     setSelectedTeam={selectTeam} />
-                <Chat chat={chat[1]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 1}/>
-                <Chat chat={chat[2]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 2}/>
+                <Chat chat={chat[1]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 1} />
+                <Chat chat={chat[2]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 2} />
                 <Roster
                     players={roster.players.filter(player => player.team === 2)}
                     style={rosterStyle}
