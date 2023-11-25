@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import { CSSProperties, createContext, useState } from 'react';
 import './app.css';
+import { io } from "socket.io-client";
 
 export const UserContext = createContext({
   user: { name: "", code: "" },
@@ -26,12 +27,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     });
   }
 
+  const socket = io('http://localhost:3005');
+
   const value = { user, updateUser };
   return (
     <UserContext.Provider value={value}>
       <div style={backgroundStyle}>
         <link href="./app.css" rel="stylesheet" />
-        <Component {...pageProps} />
+        <Component {...pageProps} socket={socket} />
       </div>
     </UserContext.Provider>
   );

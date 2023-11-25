@@ -1,16 +1,24 @@
 import { Button, Card, InputGroup } from "@blueprintjs/core";
-import { CSSProperties, useCallback, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { ChatLine } from "../types/ChatLine";
+import { Socket } from "socket.io-client";
 
 interface ChatProps {
     chat: ChatLine[],
-    style: CSSProperties
+    style: CSSProperties,
+    socket: Socket,
+    fetchChat: () => void
 }
-export default function Chat({ chat, style }: ChatProps) {
+export default function Chat({ chat, style, socket, fetchChat }: ChatProps) {
     const [chatLine, setChatLine] = useState("");
-    const [chats, setChats] = useState(chat.map(line => <li key={Date.now()}>{line.message}</li>));
+    const [chats, setChats] = useState([]);
 
-    const postChat = (message: string) => { console.log(message); };
+    const postChat = (message: string) => { socket.emit('postChat', { playerId: "5", message }) };
+
+    useMemo(() => {
+        if(chat)
+            setChats(chat.map(line => <li key={Date.now()}>{line.message}</li>));
+    }, []);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -28,6 +36,10 @@ export default function Chat({ chat, style }: ChatProps) {
             return [...chats, message];
         }
     }, [postChat]);
+
+    useMemo(() => {
+        socket.on('chatUpdate', () => fetchChat());
+    }, []);
 
     return (
         <section style={style}>

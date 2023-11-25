@@ -1,51 +1,58 @@
 import { Card } from "@blueprintjs/core";
 import { CSSProperties, useContext, useMemo, useState } from "react";
+import { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
 import Roster from "../../components/Roster";
 import { LocalColors } from "../../constants/LocalColors";
 import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
-import { UserContext } from "../_app";
 import { Player } from "../../types/Player";
-import { io } from "socket.io-client";
-
-export default function Room() {
+import { UserContext } from "../_app";
+interface RoomProps {
+    socket: Socket
+}
+export default function Room({ socket }: RoomProps) {
     //const socket = io('https://localhost:3005');
     const [roster, setRoster] = useState({ teams: [], players: [] });
+    const [chat, setChat] = useState([]);
     const { user } = useContext(UserContext);
-    const roomCode = user.code;
-
-    // when the player first joins, we need them to select a team.
-    // And then update the roster.
-    /*const players = await useMemo(async () => {
-        const roster = await useFetchRoster();
-        console.log(roster);
-        return roster.players;
-    }, []);
-    */
 
     const fetchPlayers = async () => {
         const roster = await useFetchRoster();
         setRoster(roster);
     };
 
-    fetchPlayers();
-    const leftChat = useFetchChat(roomCode, 1);
-    const rightChat = useFetchChat(roomCode, 2);
+    const fetchChat = async () => {
+        const chat = await useFetchChat();
+        setChat(chat);
+    }
+
+    useMemo(() => {
+        // fetch players on initial load
+        fetchPlayers();
+        fetchChat();
+    }, []);
 
     const [, setPlayer] = useState<Player | undefined>(undefined);
     const [playerPoints] = useState(0);
     const [selectedTeam, setSelectedTeam] = useState(0);
 
     const selectTeam = (team: number) => {
+        console.log(`set selected team ${team}`);
         setSelectedTeam(team);
-        setPlayer({
+        const player = {
             displayName: user.name,
-            team: selectedTeam,
+            team: team,
             points: playerPoints
-        });
-        // todo: push to roster
+        };
+        setPlayer(player);
+        console.log('joining team');
+        socket.emit("joinTeam", { displayName: player.displayName, team: player.team });
     };
+
+    useMemo(() => {
+        socket.on('rosterUpdate', () => { console.log('roster update'); return fetchPlayers() })
+    }, [socket]);
 
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '100px' }}>
@@ -55,15 +62,15 @@ export default function Room() {
             </Card>
             <Card style={roomStyle}>
                 <Roster
-                    players={roster.players.filter(player => player.teamIndex === 1)}
+                    players={roster.players.filter(player => player.team === 1)}
                     style={rosterStyle}
                     team={1}
                     selectedTeam={selectedTeam}
                     setSelectedTeam={selectTeam} />
-                <Chat chat={leftChat} style={chatStyle} />
-                <Chat chat={rightChat} style={chatStyle} />
+                <Chat chat={chat[0]} style={chatStyle} fetchChat={fetchChat} socket={socket}/>
+                <Chat chat={chat[1]} style={chatStyle} fetchChat={fetchChat} socket={socket} />
                 <Roster
-                    players={roster.players.filter(player => player.teamIndex === 2)}
+                    players={roster.players.filter(player => player.team === 2)}
                     style={rosterStyle}
                     team={2}
                     selectedTeam={selectedTeam}

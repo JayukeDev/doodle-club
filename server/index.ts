@@ -1,25 +1,38 @@
+import { Player } from "./types/Player";
+import { Team } from "./types/Team";
+
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected');
 
-    socket.on('post chat', (message: string) => {
-        console.log('message: ' + message);
+    socket.on('postChat', ({ playerId, message }) => {
+        const player = players.find(player => player.id === playerId);
+        if(!player)
+            return console.log(`no player with id ${playerId} to post chat ${message}`);
+
+        console.log(`post chat: ${playerId} ${message}`);
+        chat[player.team].push({ playerId, message });
+
+        socket.emit('chatUpdate');
     });
 
-    socket.on('join team', (displayName: string, teamIndex: number, id?: string) => {
-        const player = { id: id ?? "5", displayName, teamIndex };
+    socket.on('joinTeam', ({ displayName, team, id }) => {
+        const player = { id: id ?? "5", points: 0, displayName, team: Number(team) };
         players.push(player);
-        socket.emit('player joined team');
+        console.log(`rosterUpdate: ${JSON.stringify(player)}`)
+        socket.emit('rosterUpdate');
     });
 });
 
-server.listen(3005, () => {
+httpServer.listen(3005, () => {
     console.log('listening on *:3005');
 });
 
@@ -29,35 +42,46 @@ app.get('/teams', (req, res) => {
 
 app.get('/roster', (req, res) => {
     const roster = {
-        teams: mockTeams,
-        players: mockPlayers
+        teams: teams,
+        players: players
     };
+    console.log(`fetch roster: ${JSON.stringify(roster)}`)
     res.header("Access-Control-Allow-Origin", "*").send(roster);
 });
 
-interface Player {
-    id: string,
-    displayName: string,
-    teamIndex: number
-}
+app.get('/chat', (req, res) => {
+    console.log(`fetch chat: ${chat.length} total messages`)
+    res.header("Access-Control-Allow-Origin", "*").send(chat);
+});
 
-interface Team {
-    id: string,
-    displayName: string,
-    index: number
-}
+const mockTeam1Chat = [
+    { playerId: "1", message: "bitcoin" },
+    { playerId: "2", message: "bitcoin" },
+    { playerId: "2", message: "bitcoin" },
+    { playerId: "1", message: "bitcoin" },
+    { playerId: "1", message: "bitcoin" },
+];
+
+const mockTeam2Chat = [
+    { playerId: "3", message: "i roke up" },
+    { playerId: "4", message: "spaghetti" },
+    { playerId: "4", message: "yoinks" },
+    { playerId: "3", message: "bitcoin" },
+    { playerId: "4", message: "bitcoin" },
+];
 
 const mockPlayers: Player[] = [
-    { id: "1", displayName: "Bibby", teamIndex: 1 },
-    { id: "2", displayName: "Timmy", teamIndex: 1 },
-    { id: "3", displayName: "Jimmy", teamIndex: 2 },
-    { id: "4", displayName: "Ronny", teamIndex: 2 },
+    { id: "1", displayName: "Bibby", team: 1, points: 0 },
+    { id: "2", displayName: "Timmy", team: 1, points: 0 },
+    { id: "3", displayName: "Jimmy", team: 2, points: 0 },
+    { id: "4", displayName: "Ronny", team: 2, points: 0 },
 ]
 
 const mockTeams: Team[] = [
-    { id: "1", displayName: "Tigers", index: 1 },
-    { id: "2", displayName: "Cranes", index: 2 },
+    { id: "1", displayName: "Tigers" },
+    { id: "2", displayName: "Cranes" },
 ];
 
 const players = [...mockPlayers];
 const teams = [...mockTeams];
+const chat = [mockTeam1Chat, mockTeam2Chat];

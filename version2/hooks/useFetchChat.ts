@@ -1,20 +1,12 @@
 import { ChatLine } from "../types/ChatLine";
 
-export const useFetchChat = (code: string, team: number): ChatLine[] => {
-    const mockTeam1Chat = [
-        { playerId: "1", message: "bitcoin" },
-        { playerId: "2", message: "bitcoin" },
-        { playerId: "2", message: "bitcoin" },
-        { playerId: "1", message: "bitcoin" },
-        { playerId: "1", message: "bitcoin" },
-    ];
+export const useFetchChat = async (): Promise<ChatLine[][]> => {
+    const response = await fetch('http://localhost:3005/chat', {
+        method: 'get'
+    });
 
-    const mockTeam2Chat = [
-        { playerId: "3", message: "i roke up" },
-        { playerId: "4", message: "spaghetti" },
-        { playerId: "4", message: "yoinks" },
-        { playerId: "3", message: "bitcoin" },
-        { playerId: "4", message: "bitcoin" },
-    ];
-    return team === 1 ? mockTeam1Chat : mockTeam2Chat;
+    const chat = await response.json();
+
+    console.log('XXXXXXXXXXX CHAT RSPSNS', chat);
+    return chat;
 };
