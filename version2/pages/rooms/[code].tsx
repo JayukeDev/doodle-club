@@ -14,7 +14,7 @@ interface RoomProps {
 export default function Room({ socket }: RoomProps) {
     //const socket = io('https://localhost:3005');
     const [roster, setRoster] = useState({ teams: [], players: [] });
-    const [chat, setChat] = useState([]);
+    const [chat, setChat] = useState([[]]);
     const { user } = useContext(UserContext);
 
     const fetchPlayers = async () => {
@@ -51,7 +51,8 @@ export default function Room({ socket }: RoomProps) {
     };
 
     useMemo(() => {
-        socket.on('rosterUpdate', () => { console.log('roster update'); return fetchPlayers() })
+        socket.on('rosterUpdate', () => { console.log('roster update'); return fetchPlayers() });
+        socket.on('chatUpdate', () => fetchChat());
     }, [socket]);
 
     return (
@@ -67,8 +68,8 @@ export default function Room({ socket }: RoomProps) {
                     team={1}
                     selectedTeam={selectedTeam}
                     setSelectedTeam={selectTeam} />
-                <Chat chat={chat[0]} style={chatStyle} fetchChat={fetchChat} socket={socket}/>
-                <Chat chat={chat[1]} style={chatStyle} fetchChat={fetchChat} socket={socket} />
+                <Chat chat={chat[1]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 1}/>
+                <Chat chat={chat[2]} style={chatStyle} socket={socket} isSelectedTeam={selectedTeam === 2}/>
                 <Roster
                     players={roster.players.filter(player => player.team === 2)}
                     style={rosterStyle}

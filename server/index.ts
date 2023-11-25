@@ -18,8 +18,8 @@ io.on('connection', (socket) => {
         if(!player)
             return console.log(`no player with id ${playerId} to post chat ${message}`);
 
-        console.log(`post chat: ${playerId} ${message}`);
-        chat[player.team].push({ playerId, message });
+        console.log(`post chat: ${playerId} ${message} team ${player.team}`);
+        chat[player.team ?? 1].push({ playerId, message });
 
         socket.emit('chatUpdate');
     });
@@ -50,24 +50,24 @@ app.get('/roster', (req, res) => {
 });
 
 app.get('/chat', (req, res) => {
-    console.log(`fetch chat: ${chat.length} total messages`)
+    console.log(`fetch chat: ${chat[0].length + chat[1].length} total messages`);
     res.header("Access-Control-Allow-Origin", "*").send(chat);
 });
 
 const mockTeam1Chat = [
     { playerId: "1", message: "bitcoin" },
-    { playerId: "2", message: "bitcoin" },
-    { playerId: "2", message: "bitcoin" },
-    { playerId: "1", message: "bitcoin" },
-    { playerId: "1", message: "bitcoin" },
+    { playerId: "2", message: "bitc2oin" },
+    { playerId: "2", message: "bitc3oin" },
+    { playerId: "1", message: "bitco2in" },
+    { playerId: "1", message: "bit5coin" },
 ];
 
 const mockTeam2Chat = [
     { playerId: "3", message: "i roke up" },
     { playerId: "4", message: "spaghetti" },
     { playerId: "4", message: "yoinks" },
-    { playerId: "3", message: "bitcoin" },
-    { playerId: "4", message: "bitcoin" },
+    { playerId: "3", message: "bitco2in" },
+    { playerId: "4", message: "bitcoi5n" },
 ];
 
 const mockPlayers: Player[] = [
@@ -84,4 +84,4 @@ const mockTeams: Team[] = [
 
 const players = [...mockPlayers];
 const teams = [...mockTeams];
-const chat = [mockTeam1Chat, mockTeam2Chat];
+const chat = [[], mockTeam1Chat, mockTeam2Chat];
