@@ -1,7 +1,8 @@
-import { Button, Card, Checkbox, Divider, Elevation, FormGroup, InputGroup, MenuItem, NumericInput, TextArea } from "@blueprintjs/core";
+import { Button, Card, Checkbox, Elevation, FormGroup, InputGroup, MenuItem, NumericInput, TextArea } from "@blueprintjs/core";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import { useState } from "react";
 import { WordBankID, WordBankOptions } from "../constants/WordBanks";
+import { RoomSettings } from "../types/RoomSettings";
 
 // most of the following should take place in the consuming component of this.
 // THis should just expose the raw form and mini form for room settings.
@@ -16,19 +17,6 @@ import { WordBankID, WordBankOptions } from "../constants/WordBanks";
 
 // When the game has started, there should be a miniature control for game settings,
 // only exposing 'hints', 'isHints', 'isAutoTeamBalance'
-export interface RoomSettings {
-    gameMode: string;
-    wordBank: WordBankID;
-    customWords: string[];
-
-    drawTime: number;
-    teams: number;
-    teamPlayers: number;
-    hints: number;
-
-    isHints: boolean;
-    isAutoTeamBalance: boolean;
-}
 interface RoomSettingsProps {
     format: 'full' | 'mini',
     handleSubmit: (settings) => void
@@ -80,6 +68,7 @@ export default function RoomSettingsForm({ format, handleSubmit }: RoomSettingsP
                         />
                         <NumericInput
                             id="teams-number"
+                            value={settings.teams}
                             min={2}
                             max={2}
                             onValueChange={(value) => setSettings({ ...settings, teams: value })} />
@@ -91,6 +80,7 @@ export default function RoomSettingsForm({ format, handleSubmit }: RoomSettingsP
                         />
                         <NumericInput
                             id="players-number"
+                            value={settings.teamPlayers}
                             min={2}
                             max={6}
                             onValueChange={(value) => setSettings({ ...settings, teamPlayers: value })} />
@@ -102,6 +92,7 @@ export default function RoomSettingsForm({ format, handleSubmit }: RoomSettingsP
                         />
                         <NumericInput
                             id="draw-time-number"
+                            value={settings.drawTime}
                             min={20}
                             max={120}
                             onValueChange={(value) => setSettings({ ...settings, drawTime: value })} />
@@ -115,6 +106,7 @@ export default function RoomSettingsForm({ format, handleSubmit }: RoomSettingsP
                         <Checkbox inline id="isHints-checkbox" checked={settings.isHints} onChange={() => setSettings({ ...settings, isHints: !settings.isHints })} />
                         {settings.isHints ?
                             <NumericInput
+                                value={settings.hints}
                                 min={1}
                                 max={6}
                                 onValueChange={(value) => setSettings({ ...settings, hints: value })} />

@@ -8,7 +8,8 @@ import { useFetchChat } from "../../hooks/useFetchChat";
 import { useFetchRoster } from "../../hooks/useFetchRoster";
 import { Player } from "../../types/Player";
 import { UserContext } from "../_app";
-import RoomSettingsForm, { RoomSettings } from "../../components/RoomSettingsForm";
+import RoomSettingsForm from "../../components/RoomSettingsForm";
+import { RoomSettings } from "../../types/RoomSettings";
 interface RoomProps {
     socket: Socket
 }
